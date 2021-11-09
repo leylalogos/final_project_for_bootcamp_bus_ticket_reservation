@@ -11,13 +11,13 @@ class RegisterController extends Controller
 {
     public function store(UserRequest $request)
     {
-        
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'mobile' => $request->mobile
         ]);
-        return response()->json(array('message' =>'user created successfully'),201);
+        return response()->json(array('message' => 'user created successfully'), 201);
     }
 }

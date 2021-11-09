@@ -17,4 +17,4 @@ use App\Http\Controllers\LoginController;
 */
 
 Route::post('users',[RegisterController::class,'store']);
-Route::post('login',[LoginController::class,'login']);
+Route::post('session',[LoginController::class,'login']);
