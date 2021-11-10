@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Trip extends Model
 {
     use HasFactory;
+    public function bus()
+    {
+        return $this->belongsTo(Bus::class);
+    }
+    public function from()
+    {
+        return $this->belongsTo(City::class,'origin','id');
+    }
+    public function to()
+    {
+        return $this->belongsTo(City::class, 'destination', 'id');
+    }
 }

@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     use HasFactory;
+
+    public function tripsFrom()
+    {
+        return $this->hasMany(Trip::class, 'origin', 'id');
+    }
+    public function tripsTo()
+    {
+        return $this->hasMany(Trip::class, 'destination', 'id');
+    }
 }

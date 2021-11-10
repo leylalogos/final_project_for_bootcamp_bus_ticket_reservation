@@ -18,3 +18,5 @@ use App\Http\Controllers\LoginController;
 
 Route::post('users',[RegisterController::class,'store']);
 Route::post('session',[LoginController::class,'login']);
+
+//Route::post('buses',[RegisterController::class,'store']);
