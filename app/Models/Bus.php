@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bus extends Model
 {
-    use SoftDeletes;
+    use softDeletes;
     use HasFactory;
     protected $fillable = [
         'name',

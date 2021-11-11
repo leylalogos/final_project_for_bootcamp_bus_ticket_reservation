@@ -21,7 +21,13 @@ class BusController extends Controller
     public function update(Request $request, Bus $bus)
     {
         $bus->update($request->input());
+
         return response()->json(array('message' => 'bus updated successfully'), 201);
+    }
+    public function destroy(Bus $bus)
+    {
+        $bus->delete();
+        return response()->json(array('message' => 'bus deleted successfully'), 201);
 
     }
 }

@@ -22,3 +22,4 @@ Route::post('session', [LoginController::class, 'login'])->name('login');
 
 Route::middleware('auth:api')->post('buses',[BusController::class,'store']);
 Route::middleware('auth:api')->put('buses/{bus}',[BusController::class,'update']);
+Route::middleware('auth:api')->delete('buses/{bus}',[BusController::class,'destroy']);
