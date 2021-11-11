@@ -10,22 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        
-        $rules = [
-            
-            'name' => 'string',
-            'password' => 'required|string|min:6',
-            'email' => 'required|string|email|unique:users,email',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-        //dd($validator->fails());
-        if ($validator->fails()) {
-            return response()->json(array('message' => 'eror'), 400);
-        }
-        
         User::create([
             'name' => $request->name,
             'email' => $request->email,
