@@ -24,12 +24,12 @@ class TripRequest extends FormRequest
     public function rules()
     {
         return [
-            'origin' => 'required|integer',
-            'destination' => 'required|integer',
-            'price' => 'required|integer',
-            'departure_time' => 'required',
-            'arrival_time' => 'required',
-            'bus_id' => 'required|integer'
+            'origin' => 'required|integer|exists:cities,id',
+            'destination' => 'required|integer|exists:cities,id',
+            'price' => 'required|integer|min:1',
+            'departure_time' => 'required|date',
+            'arrival_time' => 'required|date',
+            'bus_id' => 'required|integer|exists:buses,id'
         ];
     }
 }

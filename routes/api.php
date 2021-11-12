@@ -25,8 +25,12 @@ Route::post('session', [LoginController::class, 'login'])->name('login');
 Route::middleware('auth:api')->post('buses', [BusController::class, 'store']);
 Route::middleware('auth:api')->put('buses/{bus}', [BusController::class, 'update']);
 Route::middleware('auth:api')->delete('buses/{bus}', [BusController::class, 'destroy']);
+Route::get('trips', [CityController::class, 'index']);
+
 
 Route::middleware('auth:api')->post('trips', [TripController::class, 'create']);
 Route::middleware('auth:api')->put('trips/{trip}', [TripController::class, 'update']);
 
+
 Route::middleware('auth:api')->post('cities', [CityController::class, 'create']);
+Route::get('cities', [CityController::class, 'index']);

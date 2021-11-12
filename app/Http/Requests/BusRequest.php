@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class BusRequest extends FormRequest
 {
@@ -24,10 +25,10 @@ class BusRequest extends FormRequest
     public function rules()
     {
         return [
-            'capacity' =>'required|integer',
+            'capacity' =>'required|integer|min:1',
             'name' =>'required|string',
             'is_vip'=>'required|boolean',
-            'user_id' =>'required|integer'
+            'user_id' =>'required|integer|exists:users,id'
         ];
     }
 }
