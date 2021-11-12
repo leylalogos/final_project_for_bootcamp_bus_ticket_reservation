@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\TripController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,9 @@ use App\Http\Controllers\BusController;
 
 Route::post('users', [RegisterController::class, 'store']);
 Route::post('session', [LoginController::class, 'login'])->name('login');
+//bus crud
+Route::middleware('auth:api')->post('buses', [BusController::class, 'store']);
+Route::middleware('auth:api')->put('buses/{bus}', [BusController::class, 'update']);
+Route::middleware('auth:api')->delete('buses/{bus}', [BusController::class, 'destroy']);
 
-Route::middleware('auth:api')->post('buses',[BusController::class,'store']);
-Route::middleware('auth:api')->put('buses/{bus}',[BusController::class,'update']);
-Route::middleware('auth:api')->delete('buses/{bus}',[BusController::class,'destroy']);
+Route::middleware('auth:api')->post('trips', [TripController::class, 'create']);

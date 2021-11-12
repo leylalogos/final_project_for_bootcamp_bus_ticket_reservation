@@ -10,10 +10,9 @@ class Trip extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', '
-         price',
+        'price',
         'bus_id',
-        'origin',
+        'origin',//city_id
         'destination',
         'departure-time',
         'arrival-time',
