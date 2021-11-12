@@ -14,6 +14,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        if(! Role::count()){
         $roles = [
             ['id' => 1,'name' => 'admin',],
             ['id' => 2,'name' => 'superuser',],
@@ -23,5 +24,6 @@ class RoleSeeder extends Seeder
         foreach ($roles as $role) {
             Role::create($role);
         };
+    }
     }
 }

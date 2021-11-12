@@ -6,6 +6,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\CityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,4 @@ Route::middleware('auth:api')->delete('buses/{bus}', [BusController::class, 'des
 Route::middleware('auth:api')->post('trips', [TripController::class, 'create']);
 Route::middleware('auth:api')->put('trips/{trip}', [TripController::class, 'update']);
 
+Route::middleware('auth:api')->post('cities', [CityController::class, 'create']);
