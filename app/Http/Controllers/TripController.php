@@ -15,9 +15,16 @@ class TripController extends Controller
             'destination' => $request->destination,
             'departure-time' => $request->departure,
             'arrival-time' => $request->arrival,
-            'bus_id' =>$request->bus_id,
+            'bus_id' => $request->bus_id,
 
         ]);
         return response()->json(array('message' => 'trip'), 201);
+    }
+
+    public function update(Request $request, Trip $trip)
+    {
+        
+        $trip->update($request->input());
+        return response()->json(array('message' => 'updated'), 200);
     }
 }

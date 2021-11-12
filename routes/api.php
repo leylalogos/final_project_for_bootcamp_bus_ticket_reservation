@@ -26,3 +26,5 @@ Route::middleware('auth:api')->put('buses/{bus}', [BusController::class, 'update
 Route::middleware('auth:api')->delete('buses/{bus}', [BusController::class, 'destroy']);
 
 Route::middleware('auth:api')->post('trips', [TripController::class, 'create']);
+Route::middleware('auth:api')->put('trips/{trip}', [TripController::class, 'update']);
+
