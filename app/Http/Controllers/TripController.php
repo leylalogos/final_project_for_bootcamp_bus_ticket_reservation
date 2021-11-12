@@ -4,27 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Trip;
+use App\Http\Requests\TripRequest;
 
 class TripController extends Controller
 {
-    public function create(Request $request)
+    public function create(TripRequest $request)
     {
         Trip::create([
             'origin' => $request->origin,
             'price' => $request->price,
             'destination' => $request->destination,
-            'departure-time' => $request->departure,
-            'arrival-time' => $request->arrival,
+            'departure_time' => $request->departure_time,
+            'arrival_time' => $request->arrival_time,
             'bus_id' => $request->bus_id,
 
         ]);
-        return response()->json(array('message' => 'trip'), 201);
+        return response()->json(array('message' => 'سفر شما با موفقیت اضافه شد'), 201);
     }
 
-    public function update(Request $request, Trip $trip)
+    public function update(TripRequest $request, Trip $trip)
     {
-        
+
         $trip->update($request->input());
-        return response()->json(array('message' => 'updated'), 200);
+        return response()->json(array('message' => 'سفر شما بروز رسانی شد.'), 204);
     }
 }

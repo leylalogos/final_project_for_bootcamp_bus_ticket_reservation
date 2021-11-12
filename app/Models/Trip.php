@@ -14,8 +14,8 @@ class Trip extends Model
         'bus_id',
         'origin',//city_id
         'destination',
-        'departure-time',
-        'arrival-time',
+        'departure_time',
+        'arrival_time',
     ];
     public function bus()
     {

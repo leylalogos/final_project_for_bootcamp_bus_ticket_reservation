@@ -19,8 +19,8 @@ class CreateTripsTable extends Migration
             $table->unsignedBigInteger('origin');
             $table->unsignedBigInteger('destination');
             $table->foreignId('bus_id');
-            $table->dateTime('departure-time');
-            $table->dateTime('arrival-time');
+            $table->dateTime('departure_time');
+            $table->dateTime('arrival_time');
             $table->timestamps();
         });
     }
