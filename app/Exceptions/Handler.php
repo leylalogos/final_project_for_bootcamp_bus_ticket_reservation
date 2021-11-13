@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,7 +35,9 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
+        $this->renderable(function(HttpException $exception, $request){
+           
+            return response()->json(['message' => 'شما اجازه ورود به این صفحه رو ندارید'],$exception->getStatusCode());
         });
         
     }

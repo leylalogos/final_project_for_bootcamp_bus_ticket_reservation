@@ -20,7 +20,7 @@ class BusController extends Controller
     public function store(BusRequest $request)
     {
         if (!Gate::allows('create-bus')) {
-            return response()->json(array('message' => 'شما اجازه تغییر در این صفحه رو ندارید'), 403);
+            abort(403);
         };
 
         Bus::create([
@@ -35,7 +35,7 @@ class BusController extends Controller
     public function update(BusRequest $request, Bus $bus)
     {
         if (!Gate::allows('deleteAndUpdateBus', $bus)) {
-            return response()->json(array('message' => 'شما اجازه تغییر در این صفحه رو ندارید'), 403);
+            abort(403);
         };
 
         $bus->update($request->input());
@@ -46,7 +46,7 @@ class BusController extends Controller
     public function destroy(Bus $bus)
     {
         if (!Gate::allows('deleteAndUpdateBus', $bus)) {
-            return response()->json(array('message' => 'شما اجازه تغییر در این صفحه رو ندارید'), 403);
+            abort(403);
         };
         $bus->delete();
 

@@ -19,9 +19,9 @@ class TripController extends Controller
     public function create(TripRequest $request)
     {
         if (!Gate::allows('deleteAndUpdateBus', Bus::find($request->bus_id))) {
-            return response()->json(array('message' => 'شما اجازه تغییر در این صفحه رو ندارید'), 403);
+            abort(403);
         }
-        
+
         Trip::create([
             'origin' => $request->origin,
             'price' => $request->price,
@@ -37,7 +37,7 @@ class TripController extends Controller
     public function update(TripRequest $request, Trip $trip)
     {
         if (!Gate::allows('deleteAndUpdateBus', $trip->bus)) {
-            return response()->json(array('message' => 'شما اجازه تغییر در این صفحه رو ندارید'), 403);
+            abort(403);
         }
 
         $trip->update($request->input());
