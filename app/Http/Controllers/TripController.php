@@ -7,10 +7,15 @@ use App\Models\Trip;
 use App\Http\Requests\TripRequest;
 use App\Models\Bus;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\TripResource;
 
 class TripController extends Controller
 {
-   
+    public function index()
+    {
+        return  TripResource::collection(Trip::all());
+    }
+
     public function create(TripRequest $request)
     {
         if (!Gate::allows('deleteAndUpdateBus', Bus::find($request->bus_id))) {

@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +20,21 @@ use App\Http\Controllers\CityController;
 |
 */
 
+Route::get('companies', [CompanyController::class, 'index']);
+
 Route::post('users', [RegisterController::class, 'store']);
 Route::post('session', [LoginController::class, 'login'])->name('login');
 //bus crud
 Route::middleware('auth:api')->post('buses', [BusController::class, 'store']);
 Route::middleware('auth:api')->put('buses/{bus}', [BusController::class, 'update']);
 Route::middleware('auth:api')->delete('buses/{bus}', [BusController::class, 'destroy']);
-Route::get('trips', [CityController::class, 'index']);
+Route::get('buses', [BusController::class, 'index']);
 
 
 Route::middleware('auth:api')->post('trips', [TripController::class, 'create']);
 Route::middleware('auth:api')->put('trips/{trip}', [TripController::class, 'update']);
+Route::get('trips', [TripController::class, 'index']);
+
 
 
 Route::middleware('auth:api')->post('cities', [CityController::class, 'create']);

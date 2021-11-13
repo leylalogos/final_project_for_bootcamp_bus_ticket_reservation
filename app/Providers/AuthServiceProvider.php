@@ -36,13 +36,13 @@ class AuthServiceProvider extends ServiceProvider
 
 
         Gate::define('create-bus', function (User $user) {
-            return  $user->role_id != 4;
+            return  $user->role_id != 3;
         });
         Gate::define('deleteAndUpdateBus', function (User $user, Bus $bus) {
-            if ($user->role_id == 3) {
+            if ($user->role_id == 4) {
                 return  ($user->id == $bus->user_id);
             }
-            return $user->role_id != 4;
+            return $user->role_id != 3;
         });
     }
 }

@@ -6,10 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Bus;
 use App\Http\Requests\BusRequest;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\BusResource;
 
 
 class BusController extends Controller
 {
+    public function index()
+    {
+
+        return BusResource::collection(Bus::all());
+    }
+
     public function store(BusRequest $request)
     {
         if (!Gate::allows('create-bus')) {

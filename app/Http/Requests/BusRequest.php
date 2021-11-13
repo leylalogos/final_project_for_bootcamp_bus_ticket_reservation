@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class BusRequest extends FormRequest
 {
@@ -25,10 +25,15 @@ class BusRequest extends FormRequest
     public function rules()
     {
         return [
-            'capacity' =>'required|integer|min:1',
-            'name' =>'required|string',
-            'is_vip'=>'required|boolean',
-            'user_id' =>'required|integer|exists:users,id'
+            'capacity' => 'required|integer|min:1',
+            'name' => 'required|string',
+            'is_vip' => 'required|boolean',
+            'user_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id')
+                    ->where('role_id', 4),
+            ],
         ];
     }
 }
