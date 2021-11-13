@@ -27,8 +27,8 @@ class TripRequest extends FormRequest
             'origin' => 'required|integer|exists:cities,id',
             'destination' => 'required|integer|exists:cities,id',
             'price' => 'required|integer|min:1',
-            'departure_time' => 'required|date',
-            'arrival_time' => 'required|date',
+            'departure_time' => 'required|date|after:now',
+            'arrival_time' => 'required|date|after:departure_time',
             'bus_id' => 'required|integer|exists:buses,id'
         ];
     }
