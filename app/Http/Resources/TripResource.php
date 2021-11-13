@@ -16,9 +16,12 @@ class TripResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'price' => $this->price,
+            'departure_time' =>$this->departure_time,
+            'arrival_time' =>$this->arrival_time,
             'origin' => $this->from->name,
             'destination' => $this->to->name,
-            'bus'=> $this->bus_id,//new BusResource($this->bus),
+            'bus'=>new BusResource($this->bus),
         ];
     }
 }
