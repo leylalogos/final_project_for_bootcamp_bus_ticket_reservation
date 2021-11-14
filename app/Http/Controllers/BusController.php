@@ -19,8 +19,7 @@ class BusController extends Controller
     public function store(BusRequest $request)
     {
 
-
-        if (!Gate::allows('bus-create', $request->user_id)) {
+        if (!Gate::allows('bus_create', $request->user_id)) {
             abort(403);
         };
 
