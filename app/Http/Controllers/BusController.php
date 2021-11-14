@@ -13,13 +13,14 @@ class BusController extends Controller
 {
     public function index()
     {
-
         return BusResource::collection(Bus::all());
     }
 
     public function store(BusRequest $request)
     {
-        if (!Gate::allows('create-bus')) {
+
+
+        if (!Gate::allows('bus-create', $request->user_id)) {
             abort(403);
         };
 
@@ -34,7 +35,7 @@ class BusController extends Controller
 
     public function update(BusRequest $request, Bus $bus)
     {
-        if (!Gate::allows('deleteAndUpdateBus', $bus)) {
+        if (!Gate::allows('bus_access', $bus)) {
             abort(403);
         };
 
@@ -45,7 +46,7 @@ class BusController extends Controller
 
     public function destroy(Bus $bus)
     {
-        if (!Gate::allows('deleteAndUpdateBus', $bus)) {
+        if (!Gate::allows('bus_access', $bus)) {
             abort(403);
         };
         $bus->delete();

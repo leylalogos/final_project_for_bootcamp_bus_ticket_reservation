@@ -18,7 +18,7 @@ class TripController extends Controller
 
     public function create(TripRequest $request)
     {
-        if (!Gate::allows('deleteAndUpdateBus', Bus::find($request->bus_id))) {
+        if (!Gate::allows('bus_access', Bus::find($request->bus_id))) {
             abort(403);
         }
 
@@ -36,11 +36,15 @@ class TripController extends Controller
 
     public function update(TripRequest $request, Trip $trip)
     {
-        if (!Gate::allows('deleteAndUpdateBus', $trip->bus)) {
+        if (!Gate::allows('bus_access', $trip->bus)) {
+            abort(403);
+        }
+        if (!Gate::allows('bus_access', Bus::find($request->bus_id) )) {
             abort(403);
         }
 
         $trip->update($request->input());
+
         return response()->json(
             array('message' => 'سفر شما بروز رسانی شد'),
             200

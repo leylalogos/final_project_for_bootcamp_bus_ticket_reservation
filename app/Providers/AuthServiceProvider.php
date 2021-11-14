@@ -34,16 +34,18 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensExpireIn(now()->addDays(5));
         Passport::refreshTokensExpireIn(now()->addDays(30));
 
-
-        Gate::define('create-bus', function (User $user) {
-            return  $user->role_id != 3;
-        });
-        
-        Gate::define('deleteAndUpdateBus', function (User $user, Bus $bus) {
-            if ($user->role_id == 4) {
-                return  ($user->id == $bus->user_id);
+        Gate::define('bus_create', function (User $user, $busOwnerId) {
+            if ($user->role_id == 4) { //company user
+                return ($user->id == $busOwnerId);
             }
-            return $user->role_id != 3;
+            return $user->role_id != 3; //3 normal user
+        });
+
+        Gate::define('bus_access', function (User $user, Bus $bus) {
+            if ($user->role_id == 4) { //company user
+                return ($user->id == $bus->user_id);
+            }
+            return $user->role_id != 3; //3 normal user
         });
     }
 }
