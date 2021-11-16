@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
 {
     public function index()
     {
-        return Comment::all();
+        return CommentResource::collection(Comment::all());
     }
     public function create(Request $request)
     {
