@@ -8,6 +8,7 @@ use App\Http\Controllers\BusController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,3 +43,4 @@ Route::middleware('auth:api')->get('profile', function () {
 });
 //comments route
 Route::get('comments', [CommentController::class, 'index']);
+Route::middleware('auth:api')->post('comments', [CommentController::class, 'create']);

@@ -8,6 +8,7 @@ use Laravel\Passport\Passport;
 use App\Models\User;
 use App\Models\Bus;
 use App\Models\Trip;
+use App\Models\Comment;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -46,6 +47,10 @@ class AuthServiceProvider extends ServiceProvider
                 return ($user->id == $bus->user_id);
             }
             return $user->role_id != 3; //3 normal user
+        });
+
+        Gate::define('comment', function (User $user) {
+            return ($user->role_id == 4);
         });
     }
 }
