@@ -11,9 +11,16 @@ use App\Http\Resources\TripResource;
 
 class TripController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return  TripResource::collection(Trip::all());
+
+        $trips =  Trip::date($request->date)
+            ->origin($request->origin)
+            ->price($request->price)
+            ->orderByDesc('departure_time')
+            ->get();
+
+        return  TripResource::collection($trips);
     }
 
     public function create(TripRequest $request)
@@ -39,7 +46,7 @@ class TripController extends Controller
         if (!Gate::allows('bus_access', $trip->bus)) {
             abort(403);
         }
-        if (!Gate::allows('bus_access', Bus::find($request->bus_id) )) {
+        if (!Gate::allows('bus_access', Bus::find($request->bus_id))) {
             abort(403);
         }
 

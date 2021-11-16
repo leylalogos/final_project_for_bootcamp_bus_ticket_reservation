@@ -12,7 +12,7 @@ class Trip extends Model
     protected $fillable = [
         'price',
         'bus_id',
-        'origin',//city_id
+        'origin', //city_id
         'destination',
         'departure_time',
         'arrival_time',
@@ -28,5 +28,23 @@ class Trip extends Model
     public function to()
     {
         return $this->belongsTo(City::class, 'destination', 'id');
+    }
+
+    public function scopeDate($query, $date)
+    {
+        if ($date) {
+            return $query->whereBetween('departure_time', [$date . ' 00:00:00', $date . ' 23:59:59']);
+        }
+        return $query;
+    }
+
+    public function scopeOrigin($query, $origin)
+    {
+        return $origin ? $query->where('origin', $origin) : $query;
+    }
+    public function scopePrice($query, $sort)
+    {
+       return $sort? $query->orderBy('price', $sort) : $query;
+      
     }
 }

@@ -40,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
                 return ($user->id == $busOwnerId);
             }
             return $user->role_id != 3; //3 normal user
+
         });
 
         Gate::define('bus_access', function (User $user, Bus $bus) {

@@ -38,6 +38,7 @@ Route::get('companies', [CompanyController::class, 'index']);
 //city route
 Route::middleware('auth:api')->post('cities', [CityController::class, 'create']);
 Route::get('cities', [CityController::class, 'index']);
+
 Route::middleware('auth:api')->get('profile', function () {
     return auth()->user();
 });
