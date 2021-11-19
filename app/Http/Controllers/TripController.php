@@ -8,15 +8,18 @@ use App\Http\Requests\TripRequest;
 use App\Models\Bus;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\TripResource;
+use App\Http\Requests\SortRequest;
 
 class TripController extends Controller
 {
-    public function index(Request $request)
+    public function index(SortRequest $request)
     {
 
         $trips =  Trip::date($request->date)
             ->origin($request->origin)
             ->price($request->price)
+            ->busModel($request->name)
+            ->capacity($request->capacity)
             ->orderByDesc('departure_time')
             ->get();
 

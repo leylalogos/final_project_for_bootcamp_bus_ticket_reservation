@@ -30,6 +30,12 @@ class Trip extends Model
         return $this->belongsTo(City::class, 'destination', 'id');
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+
     public function scopeDate($query, $date)
     {
         if ($date) {
@@ -37,14 +43,20 @@ class Trip extends Model
         }
         return $query;
     }
-
     public function scopeOrigin($query, $origin)
     {
         return $origin ? $query->where('origin', $origin) : $query;
     }
     public function scopePrice($query, $sort)
     {
-       return $sort? $query->orderBy('price', $sort) : $query;
-      
+        return $sort ? $query->orderBy('price', $sort) : $query;
+    }
+    public function scopeBusModel($query, $model)
+    {
+        return $model ? $query->join('buses', 'buses.id', 'trips.bus_id')->orderBy('buses.name', $model) : $query;
+    }
+    public function scopeCapacity($query, $capacity)
+    {
+        return $capacity ? $query->join('buses', 'buses.id', 'trips.bus_id')->orderBy('buses.capacity', $capacity) : $query;
     }
 }
