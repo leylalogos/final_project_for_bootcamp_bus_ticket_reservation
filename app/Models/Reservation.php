@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
+    protected $fillable = ['user_id', 'trip_id', 'is_reserved', 'seat_number'];
 
     public function trip()
     {

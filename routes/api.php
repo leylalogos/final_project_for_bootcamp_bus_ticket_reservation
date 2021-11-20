@@ -9,6 +9,7 @@ use App\Http\Controllers\TripController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ResevationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,7 @@ Route::middleware('auth:api')->get('profile', function () {
 //comments route
 Route::get('comments', [CommentController::class, 'index']);
 Route::middleware('auth:api')->post('comments', [CommentController::class, 'create']);
+
+Route::get('/trips/{trip}/seats',[ResevationController::class, 'index']);
+Route::middleware('auth:api')->post('/trips/{trip}/seats/{seat}',[ResevationController::class, 'create']);
+
