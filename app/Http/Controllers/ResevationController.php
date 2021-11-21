@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\SeatResource;
 use App\Http\Resources\SeatCollection;
 use App\Models\Trip;
+use App\Http\Requests\ReserveRequest;
 
 class ResevationController extends Controller
 {
@@ -19,11 +20,16 @@ class ResevationController extends Controller
         ]);
     }
 
-    public function create(Request $request, $trip, $seat)
+    public function create(ReserveRequest $request, $trip)
     {
+        // Reservation::where('is_reserved', false)->where('created_at' ,'<', now()->)->delete();
 
         Reservation::create([
-            'user_id' => $request->s
+            'user_id' => auth()->id(),
+            'trip_id' => $trip,
+            'seat_number' => $request->seat_number,
+            'is_reserved' => false //it will be temprory reserved
         ]);
+        return response()->json(array('message' => 'صندلی شما رزرو شد'), 201);
     }
 }

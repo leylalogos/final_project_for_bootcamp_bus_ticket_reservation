@@ -47,6 +47,5 @@ Route::middleware('auth:api')->get('profile', function () {
 Route::get('comments', [CommentController::class, 'index']);
 Route::middleware('auth:api')->post('comments', [CommentController::class, 'create']);
 
-Route::get('/trips/{trip}/seats',[ResevationController::class, 'index']);
-Route::middleware('auth:api')->post('/trips/{trip}/seats/{seat}',[ResevationController::class, 'create']);
-
+Route::middleware('removeTempReserve')->get('/trips/{trip}/seats', [ResevationController::class, 'index']);
+Route::middleware(['auth:api', 'removeTempReserve'])->post('/trips/{trip}/seats', [ResevationController::class, 'create']);
