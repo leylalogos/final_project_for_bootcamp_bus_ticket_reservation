@@ -27,7 +27,6 @@ class User extends Authenticatable
 
     ];
 
-    protected $attributes = ['role_id' => 3];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -43,6 +42,8 @@ class User extends Authenticatable
     const USER_TYPE_SUPER_USER = 2;
     const USER_TYPE_NORMAL_USER = 3;
     const USER_TYPE_COMPANY = 4;
+    
+    protected $attributes = ['role_id' => self::USER_TYPE_NORMAL_USER];
 
 
     /**

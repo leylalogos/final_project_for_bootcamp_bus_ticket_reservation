@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
 class BusRequest extends FormRequest
 {
@@ -32,7 +33,7 @@ class BusRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-                    ->where('role_id', 4),
+                    ->where('role_id', User::USER_TYPE_COMPANY),
             ],
         ];
     }
