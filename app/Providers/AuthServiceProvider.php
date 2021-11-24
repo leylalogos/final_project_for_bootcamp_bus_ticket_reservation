@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
 
-        Passport::tokensExpireIn(now()->addDays(5));
+        Passport::tokensExpireIn(now()->addDays(25));
         Passport::refreshTokensExpireIn(now()->addDays(30));
 
         Gate::define('bus_create', function (User $user, $busOwnerId) {

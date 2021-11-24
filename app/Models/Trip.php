@@ -45,7 +45,7 @@ class Trip extends Model
     }
     public function scopeOrigin($query, $origin)
     {
-        return $origin ? $query->where('origin', $origin) : $query;
+        return ($origin ? $query->where('origin', $origin) : $query);
     }
     public function scopePrice($query, $sort)
     {

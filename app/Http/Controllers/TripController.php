@@ -14,11 +14,12 @@ class TripController extends Controller
 {
     public function index(SortRequest $request)
     {
-
+        
+        //use scope for sorting
         $trips =  Trip::date($request->date)
             ->origin($request->origin)
             ->price($request->price)
-            ->busModel($request->name)
+            ->busModel($request->bus_name)
             ->capacity($request->capacity)
             ->orderByDesc('departure_time')
             ->get();

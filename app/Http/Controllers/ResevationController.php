@@ -22,8 +22,6 @@ class ResevationController extends Controller
 
     public function create(ReserveRequest $request, $trip)
     {
-        // Reservation::where('is_reserved', false)->where('created_at' ,'<', now()->)->delete();
-
         Reservation::create([
             'user_id' => auth()->id(),
             'trip_id' => $trip,

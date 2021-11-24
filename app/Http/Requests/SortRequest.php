@@ -26,8 +26,9 @@ class SortRequest extends FormRequest
         return [
             'origin' => 'integer|exists:cities,id|min:1',
             'price' => 'string|in:asc,desc',
-            'capacity' =>'string|in:asc,desc',
-            'departure_time' =>'date',
+            'capacity' => 'string|in:asc,desc',
+            'departure_time' => 'date',
+            'bus_name' => 'string|in:asc,desc'
         ];
     }
 }

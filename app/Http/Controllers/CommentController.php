@@ -13,6 +13,7 @@ class CommentController extends Controller
     {
         return CommentResource::collection(Comment::all());
     }
+    
     public function create(Request $request)
     {
         if (!Gate::allows('comment')) {
