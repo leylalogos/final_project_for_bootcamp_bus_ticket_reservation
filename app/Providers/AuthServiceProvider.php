@@ -53,5 +53,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('comment', function (User $user) {
             return ($user->role_id == 4);
         });
+        Gate::define('reserve', function (User $user) {
+            return ($user->role_id == 3);
+        });
     }
 }

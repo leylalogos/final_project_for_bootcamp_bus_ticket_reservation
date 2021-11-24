@@ -8,6 +8,8 @@ use App\Http\Resources\SeatResource;
 use App\Http\Resources\SeatCollection;
 use App\Models\Trip;
 use App\Http\Requests\ReserveRequest;
+use Illuminate\Support\Facades\Gate;
+
 
 class ResevationController extends Controller
 {
@@ -22,6 +24,9 @@ class ResevationController extends Controller
 
     public function create(ReserveRequest $request, $trip)
     {
+        if (!Gate::allows('reserve')) {
+            abort(403);
+        }
         Reservation::create([
             'user_id' => auth()->id(),
             'trip_id' => $trip,
@@ -29,5 +34,24 @@ class ResevationController extends Controller
             'is_reserved' => false //it will be temprory reserved
         ]);
         return response()->json(array('message' => 'صندلی شما رزرو شد'), 201);
+    }
+
+    public function ShowReceipt($trip_id)
+    {
+        $count = Reservation::where('user_id', '=', auth()->id())
+            ->where('is_reserved', false)
+            ->where('trip_id', $trip_id)
+            ->count();
+        $trip = Trip::find($trip_id);
+
+        return [
+            'name' => auth()->user()->name,
+            'price' => $trip->price * $count,
+            'passenger_count' => $count,
+            'origin' => $trip->from->name,
+            'destination' => $trip->to->name,
+            'departure_time' => $trip->departure_time,
+            'bus_company_name' => $trip->bus->user->name,
+        ];
     }
 }

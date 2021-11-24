@@ -50,3 +50,4 @@ Route::middleware('auth:api')->post('comments', [CommentController::class, 'crea
 //reservation route
 Route::middleware('removeTempReserve')->get('/trips/{trip}/seats', [ResevationController::class, 'index']);
 Route::middleware(['auth:api', 'removeTempReserve'])->post('/trips/{trip}/seats', [ResevationController::class, 'create']);
+Route::middleware('auth:api')->get('/trips/{trip}/receipt',[ResevationController::class, 'showReceipt']);
