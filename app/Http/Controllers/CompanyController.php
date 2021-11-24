@@ -10,6 +10,6 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        return CompanyResource::collection(User::where('role_id', 4)->get());
+        return CompanyResource::collection(User::where('role_id', User::USER_TYPE_COMPANY)->get());
     }
 }

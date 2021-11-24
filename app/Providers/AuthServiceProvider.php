@@ -36,25 +36,25 @@ class AuthServiceProvider extends ServiceProvider
         Passport::refreshTokensExpireIn(now()->addDays(30));
 
         Gate::define('bus_create', function (User $user, $busOwnerId) {
-            if ($user->role_id == 4) { //company user
+            if ($user->role_id == User::USER_TYPE_COMPANY) { //company user
                 return ($user->id == $busOwnerId);
             }
-            return $user->role_id != 3; //3 normal user
+            return $user->role_id != User::USER_TYPE_NORMAL_USER; //3 normal user
 
         });
 
         Gate::define('bus_access', function (User $user, Bus $bus) {
-            if ($user->role_id == 4) { //company user
+            if ($user->role_id == User::USER_TYPE_COMPANY) { //company user
                 return ($user->id == $bus->user_id);
             }
-            return $user->role_id != 3; //3 normal user
+            return $user->role_id != User::USER_TYPE_NORMAL_USER; //3 normal user
         });
 
         Gate::define('comment', function (User $user) {
-            return ($user->role_id == 4);
+            return ($user->role_id == User::USER_TYPE_COMPANY);
         });
         Gate::define('reserve', function (User $user) {
-            return ($user->role_id == 3);
+            return ($user->role_id == User::USER_TYPE_NORMAL_USER );
         });
     }
 }

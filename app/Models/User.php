@@ -39,6 +39,12 @@ class User extends Authenticatable
 
     ];
 
+    const USER_TYPE_ADMIN = 1; 
+    const USER_TYPE_SUPER_USER = 2;
+    const USER_TYPE_NORMAL_USER = 3;
+    const USER_TYPE_COMPANY = 4;
+
+
     /**
      * The attributes that should be cast.
      *
