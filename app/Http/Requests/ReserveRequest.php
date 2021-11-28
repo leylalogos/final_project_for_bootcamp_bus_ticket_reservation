@@ -29,9 +29,9 @@ class ReserveRequest extends FormRequest
     {
         $capacity = Trip::find($request->trip)->bus->capacity;
         return [
-            'seat_number' => [
+            'seat_numbers' => 'array|min:1|required',
+            'seat_numbers.*' => [
                 'integer',
-                'required',
                 'min:1',
                 "max:$capacity",
                 Rule::unique('reservations', 'seat_number')->where('trip_id', $request->trip)
