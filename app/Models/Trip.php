@@ -59,4 +59,16 @@ class Trip extends Model
     {
         return $capacity ? $query->join('buses', 'buses.id', 'trips.bus_id')->orderBy('buses.capacity', $capacity) : $query;
     }
+
+    public function getUserReservedTotalPriceAttribute(){
+
+        return $this->price * $this->UserReservedSeatCount;
+    }
+
+    public function getUserReservedSeatCountAttribute(){
+        return Reservation::where('user_id', auth()->id())
+        ->where('is_reserved', false)
+        ->where('trip_id', $this->id)
+        ->count();  
+    }
 }

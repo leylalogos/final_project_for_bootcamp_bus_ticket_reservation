@@ -10,6 +10,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ResevationController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/trips/{trip}/seats', [ResevationController::class, 'create'])
         ->middleware('removeTempReserve');
-    Route::get('/trips/{trip}/receipt', [ResevationController::class, 'showReceipt']);
+    Route::get('/trips/{trip}/receipt', [ResevationController::class, 'showReceipt'])
+        ->middleware('removeTempReserve');
+
+    Route::get('/trips/{trip}/payment/start',[PaymentController::class,'pay']);
+    Route::get('/trips/{trip}/payment/verify',[PaymentController::class,'verify'])->name('payment.verify');
 });
 Route::get('buses', [BusController::class, 'index']);
 Route::get('trips', [TripController::class, 'index']);

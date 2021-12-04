@@ -9,6 +9,7 @@ use App\Http\Resources\SeatCollection;
 use App\Models\Trip;
 use App\Http\Requests\ReserveRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Session;
 
 
 class ResevationController extends Controller
@@ -41,15 +42,11 @@ class ResevationController extends Controller
 
     public function ShowReceipt(Trip $trip)
     {
-        $seat_count = Reservation::where('user_id', '=', auth()->id())
-            ->where('is_reserved', false)
-            ->where('trip_id', $trip->id)
-            ->count();
-
+        
         return [
             'name' => auth()->user()->name,
-            'price' => $trip->price * $seat_count,
-            'passenger_count' => $seat_count,
+            'price' => $trip->UserReservedTotalPrice,
+            'passenger_count' => $trip->userReservedSeatCount,
             'origin' => $trip->from->name,
             'destination' => $trip->to->name,
             'departure_time' => $trip->departure_time,
