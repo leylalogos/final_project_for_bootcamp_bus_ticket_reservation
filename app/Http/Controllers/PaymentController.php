@@ -11,13 +11,11 @@ use App\Models\Reservation;
 
 class PaymentController extends Controller
 {
-    public function pay(Request $request, Trip $trip)
+    public function pay(Trip $trip)
     {
-
         $amount =  $trip->UserReservedTotalPrice;
-        if ($request->has('debug')) {
-            $amount = 1000;
-        }
+        //debug
+        $amount = 1000;
 
         $result = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -37,16 +35,17 @@ class PaymentController extends Controller
         ]);
         $url = 'https://www.zarinpal.com/pg/StartPay/' . $result['data']["authority"];
 
-        return ($request->has('debug') ? $url : redirect($url));
+        //debug for test
+        return $url;
+        //for production
+        // return redirect($url);
     }
-
 
     public function verify(Trip $trip, Request $request)
     {
         $amount =  $trip->UserReservedTotalPrice;
-        if ($request->has('debug')) {
-            $amount = 1000;
-        }
+        //debug
+        $amount = 1000;
 
         $authority = $request->Authority;
         $response = Http::withHeaders([
@@ -66,6 +65,15 @@ class PaymentController extends Controller
             isset($response['data']['code']) &&
             ($response['data']['code'] == 100 || $response['data']['code'] == 101)
         ) {
+            $ticket = [
+                'name' => auth()->user()->name,
+                'price' => $trip->UserReservedTotalPrice,
+                'passenger_count' => $trip->userReservedSeatCount,
+                'origin' => $trip->from->name,
+                'destination' => $trip->to->name,
+                'departure_time' => $trip->departure_time,
+                'bus_company_name' => $trip->bus->user->name,
+            ];
             $payment->update([
                 'ref_id' => $response["data"]['ref_id'],
                 'success' => true
@@ -80,7 +88,8 @@ class PaymentController extends Controller
 
             return [
                 'message' => 'payment was successful',
-                'ref_id' => $response['data']['ref_id']
+                'ref_id' => $response['data']['ref_id'],
+                'ticket' => $ticket
             ];
         } else {
             $payment->update(['success' => false]);
