@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Payment;
 use App\Models\Trip;
 use App\Models\Reservation;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -86,10 +88,15 @@ class PaymentController extends Controller
                     'payment_id' => $payment->id
                 ]);
 
+            $pdf = PDF::loadView('pdf', ['ticket' => $ticket]);
+            $pdfPath = 'tickets/'.Str::random(40).'.pdf';
+            $pdf->save(public_path($pdfPath));
+
             return [
                 'message' => 'payment was successful',
                 'ref_id' => $response['data']['ref_id'],
-                'ticket' => $ticket
+                'ticket' => $ticket,
+                'file' => asset($pdfPath)
             ];
         } else {
             $payment->update(['success' => false]);

@@ -46,7 +46,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/trips/{trip}/payment/start',[PaymentController::class,'pay']);
     Route::get('/trips/{trip}/payment/verify',[PaymentController::class,'verify'])->name('payment.verify');
+
 });
+
 Route::get('buses', [BusController::class, 'index']);
 Route::get('trips', [TripController::class, 'index']);
 Route::get('companies', [CompanyController::class, 'index']);
