@@ -20,8 +20,9 @@ class RemoveTemproryReserves
     {
         Reservation::where('is_reserved', false)
             ->where('created_at', '<', Carbon::now()
-            ->subMinutes(1))
+                ->subMinutes(1))
             ->delete();
+            
         return $next($request);
     }
 }

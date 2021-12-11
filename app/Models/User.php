@@ -38,11 +38,11 @@ class User extends Authenticatable
 
     ];
 
-    const USER_TYPE_ADMIN = 1; 
+    const USER_TYPE_ADMIN = 1;
     const USER_TYPE_SUPER_USER = 2;
     const USER_TYPE_NORMAL_USER = 3;
     const USER_TYPE_COMPANY = 4;
-    
+
     protected $attributes = ['role_id' => self::USER_TYPE_NORMAL_USER];
 
 
@@ -58,14 +58,17 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
     public function buses()
     {
         return $this->hasMany(Bus::class);
     }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
+    
     public function reservations()
     {
         return $this->hasMany(Reservation::class);

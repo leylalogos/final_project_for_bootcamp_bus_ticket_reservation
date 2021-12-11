@@ -87,7 +87,8 @@ class PaymentController extends Controller
                     'is_reserved' => true,
                     'payment_id' => $payment->id
                 ]);
-
+                
+                //generate pdf
             $pdf = PDF::loadView('pdf', ['ticket' => $ticket]);
             $pdfPath = 'tickets/'.Str::random(40).'.pdf';
             $pdf->save(public_path($pdfPath));
@@ -96,7 +97,7 @@ class PaymentController extends Controller
                 'message' => 'payment was successful',
                 'ref_id' => $response['data']['ref_id'],
                 'ticket' => $ticket,
-                'file' => asset($pdfPath)
+                'file' => $pdfPath
             ];
         } else {
             $payment->update(['success' => false]);
