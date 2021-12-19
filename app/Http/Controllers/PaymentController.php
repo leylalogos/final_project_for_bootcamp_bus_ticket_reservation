@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Session;
-use App\Models\Payment;
 use App\Models\Trip;
+use App\Models\Payment;
 use App\Models\Reservation;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Http;
+use App\Repositories\PaymentRepository;
+
 
 class PaymentController extends Controller
 {
@@ -24,17 +25,13 @@ class PaymentController extends Controller
             'Accept' => 'application/json',
             'User-Agent' => 'ZarinPal Rest Api v4'
         ])->post('https://api.zarinpal.com/pg/v4/payment/request.json', [
-            'merchant_id' => '1344b5d4-0048-11e8-94db-005056a205be',
+            'merchant_id' => env('MERCHANT_ID'),
             'amount' => $amount,
             'description' => 'تست',
             'callback_url' => route('payment.verify', ['trip' => $trip]),
         ])->json();
 
-        Payment::create([
-            'user_id' => auth()->id(),
-            'amount' => $amount,
-            'authority' => $result['data']['authority'],
-        ]);
+        PaymentRepository::store($amount,$result);
         $url = 'https://www.zarinpal.com/pg/StartPay/' . $result['data']["authority"];
 
         //debug for test
@@ -55,12 +52,14 @@ class PaymentController extends Controller
             'Accept' => 'application/json',
             'User-Agent' => 'ZarinPal Rest Api v4'
         ])->post('https://api.zarinpal.com/pg/v4/payment/verify.json', [
-            'merchant_id' => '1344b5d4-0048-11e8-94db-005056a205be',
+            'merchant_id' => env('MERCHANT_ID'),
             'amount' => $amount,
             'authority' => $authority
         ])->json();
-
-        $payment = Payment::where('authority', $authority)->first();
+//use transaction
+            $payrepo = new PaymentRepository();
+            $payrepo->setPayment($authority);
+       // $payment = Payment::where('authority', $authority)->first();
 
         if (
             isset($response['data']) &&
@@ -76,18 +75,9 @@ class PaymentController extends Controller
                 'departure_time' => $trip->departure_time,
                 'bus_company_name' => $trip->bus->user->name,
             ];
-            $payment->update([
-                'ref_id' => $response["data"]['ref_id'],
-                'success' => true
-            ]);
+            $payrepo->paymentSuccess($response,$trip);
+           
 
-            Reservation::where('user_id', auth()->id())
-                ->where('trip_id', $trip->id)
-                ->update([
-                    'is_reserved' => true,
-                    'payment_id' => $payment->id
-                ]);
-                
                 //generate pdf
             $pdf = PDF::loadView('pdf', ['ticket' => $ticket]);
             $pdfPath = 'tickets/'.Str::random(40).'.pdf';
@@ -100,8 +90,8 @@ class PaymentController extends Controller
                 'file' => $pdfPath
             ];
         } else {
-            $payment->update(['success' => false]);
-
+            
+            $payrepo->paymentFailed();
             return ['message' => 'payment was not successful'];
         }
     }

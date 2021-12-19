@@ -46,7 +46,7 @@ class TripController extends Controller
     }
 
     public function update(TripRequest $request, Trip $trip)
-    {
+    {//middleware
         if (!Gate::allows('bus_access', $trip->bus)) {
             abort(403);
         }
