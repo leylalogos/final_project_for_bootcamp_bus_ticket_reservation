@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class ZarinPal implements PaymentGateway
 {
-    public function payRequest($amount)
+    public function payRequest($amount,$callback_url)
     {
         return Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -17,12 +17,12 @@ class ZarinPal implements PaymentGateway
             'merchant_id' => env('MERCHANT_ID'),
             'amount' => $amount,
             'description' => 'تست',
-            'callback_url' => route('payment.verify', ['trip' => $trip]),
-        ])->json();
+            'callback_url' => $callback_url,
+        ])->json()['data']['authority'];
     }
     public function verify($amount, $authority)
     {
-       return Http::withHeaders([
+        return Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
             'User-Agent' => 'ZarinPal Rest Api v4'

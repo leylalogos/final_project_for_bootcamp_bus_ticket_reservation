@@ -15,14 +15,15 @@ class PaymentRepository
         $this->payment = Payment::where('authority', $authority)->first();
     }
 
-    public static function store($amount, $result)
+    public static function store($amount, $authority)
     {
         Payment::create([
             'user_id' => auth()->id(),
             'amount' => $amount,
-            'authority' => $result['data']['authority'],
+            'authority' => $authority,
         ]);
     }
+
     public function paymentSuccess($response, $trip)
     {
         try {
