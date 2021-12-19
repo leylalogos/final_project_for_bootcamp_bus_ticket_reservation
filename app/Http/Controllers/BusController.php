@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+//sort
 use Illuminate\Http\Request;
 use App\Models\Bus;
 use App\Http\Requests\BusRequest;
@@ -22,7 +22,7 @@ class BusController extends Controller
         if (!Gate::allows('bus_create', $request->user_id)) {
             abort(403);
         };
-
+//repository
         Bus::create([
             'capacity' => $request->capacity,
             'name' => $request->name,

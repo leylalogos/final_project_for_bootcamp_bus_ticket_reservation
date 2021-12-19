@@ -3,35 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Trip;
-use App\Models\Payment;
-use App\Models\Reservation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
-use Illuminate\Support\Facades\Http;
+use App\Contracts\PaymentGateway;
 use App\Repositories\PaymentRepository;
+
 
 
 class PaymentController extends Controller
 {
-    public function pay(Trip $trip)
+    public function pay(Trip $trip, PaymentGateway $paymentGateway)
     {
         $amount =  $trip->UserReservedTotalPrice;
         //debug
         $amount = 1000;
-
-        $result = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-            'User-Agent' => 'ZarinPal Rest Api v4'
-        ])->post('https://api.zarinpal.com/pg/v4/payment/request.json', [
-            'merchant_id' => env('MERCHANT_ID'),
-            'amount' => $amount,
-            'description' => 'تست',
-            'callback_url' => route('payment.verify', ['trip' => $trip]),
-        ])->json();
-
-        PaymentRepository::store($amount,$result);
+        //use paymentgatway serviseprovider
+        $result = $paymentGateway->payRequest($amount);
+        //use repository disign pattern
+        PaymentRepository::store($amount, $result);
         $url = 'https://www.zarinpal.com/pg/StartPay/' . $result['data']["authority"];
 
         //debug for test
@@ -40,26 +30,17 @@ class PaymentController extends Controller
         // return redirect($url);
     }
 
-    public function verify(Trip $trip, Request $request)
+    public function verify(Trip $trip, Request $request, PaymentGateway $paymentGateway)
     {
         $amount =  $trip->UserReservedTotalPrice;
         //debug
         $amount = 1000;
 
         $authority = $request->Authority;
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-            'User-Agent' => 'ZarinPal Rest Api v4'
-        ])->post('https://api.zarinpal.com/pg/v4/payment/verify.json', [
-            'merchant_id' => env('MERCHANT_ID'),
-            'amount' => $amount,
-            'authority' => $authority
-        ])->json();
-//use transaction
-            $payrepo = new PaymentRepository();
-            $payrepo->setPayment($authority);
-       // $payment = Payment::where('authority', $authority)->first();
+        $response = $paymentGateway->verify($amount, $authority);
+
+        $payrepo = new PaymentRepository();
+        $payrepo->setPayment($authority);
 
         if (
             isset($response['data']) &&
@@ -75,12 +56,12 @@ class PaymentController extends Controller
                 'departure_time' => $trip->departure_time,
                 'bus_company_name' => $trip->bus->user->name,
             ];
-            $payrepo->paymentSuccess($response,$trip);
-           
+            $payrepo->paymentSuccess($response, $trip);
 
-                //generate pdf
+
+            //generate pdf
             $pdf = PDF::loadView('pdf', ['ticket' => $ticket]);
-            $pdfPath = 'tickets/'.Str::random(40).'.pdf';
+            $pdfPath = 'tickets/' . Str::random(40) . '.pdf';
             $pdf->save(public_path($pdfPath));
 
             return [
@@ -90,7 +71,7 @@ class PaymentController extends Controller
                 'file' => $pdfPath
             ];
         } else {
-            
+
             $payrepo->paymentFailed();
             return ['message' => 'payment was not successful'];
         }
